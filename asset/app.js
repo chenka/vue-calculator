@@ -3,8 +3,10 @@ new Vue({
   data: {
     sum: 0,
     num: 0,
-    formulaText: '0',
+    evalText: '0',
+    historyText: '0',
     justAnswer: false,
+    errorCount: 0,
     fadeIn: false
   },
   methods: {
@@ -23,26 +25,38 @@ new Vue({
       return sum
     },
     answer() {
-      const calText = this.formulaText.substr(0, this.formulaText.length - 1)
+      const calText = this.evalText.substr(0, this.evalText.length - 1)
       this.sum = this.eval(calText)
-      this.formulaText = this.sum
+      this.evalText = this.sum
       this.justAnswer = true
+      this.historyText = '0'
       this.flash()
     },
     ignoreLastInput() {
-      this.formulaText = this.formulaText.substr(0, this.formulaText.length - 1)
+      this.evalText = this.evalText.substr(0, this.evalText.length - 1)
+      this.historyText = this.historyText.substr(0, this.historyText.length - 1)
     },
     invalidCharAfterOperator() {
-      return this.formulaText.match(/[\*\-\+\/][\=0\.]/)
+      return this.evalText.match(/[\*\-\+\/][\=\.]/)
+    },
+    doubleZero() {
+      return this.evalText.match(/[\*\-\+\/]0{2}/) || this.evalText.match(/[\*\-\+\/]0\d/)
+    },
+    invalidDotNatation() {
+      return this.evalText.split(/[\*\-\+\/]/g).some((i)  => {
+        const greaterOneDot = i.match(/\.*\./g)
+        return i.match(/\.{2}/g) || (greaterOneDot != null && greaterOneDot.length >= 2)
+      })
     },
     duplicatedOperator() {
-      return this.formulaText.match(/[\*\-\+\/]{2}$/g)
+      return this.evalText.match(/[\*\-\+\/]{2}$/g)
     },
     isOperator(value) {
       return value.match(/[\*\-\+\/]/g)
     },
     clear() {
-      this.formulaText = '0'
+      this.evalText = '0'
+      this.historyText = '0'
       this.sum = 0
       this.justAnswer = false
     },
@@ -52,8 +66,8 @@ new Vue({
         if (value === '÷') value = '/'
         const exceedText = 'Exceed The Digit Limit'
         
-        if (this.formulaText == exceedText) {
-          this.formulaText = ''
+        if (this.evalText == exceedText) {
+          this.evalText = ''
         }
         
         if (this.justAnswer && value.match(/\d/)) {
@@ -64,47 +78,55 @@ new Vue({
           this.justAnswer = false
         }
 
-
         if (value.match(/\d/g)){
-          if (this.formulaText == '0') this.formulaText = ''
+          if (this.evalText == '0') {
+            this.evalText = ''
+            this.historyText = ''
+          }
         }
-        this.formulaText += value
+        this.evalText += value
+        this.historyText += value
         
-        if (this.invalidCharAfterOperator()) {
+        if (this.invalidCharAfterOperator() || this.invalidDotNatation() || this.doubleZero()|| this.evalText.match(/\.[\*\-\+\/]/) ) {
           this.ignoreLastInput()
           return
         }
         
-        if (this.formulaText.length > 9) {
-          this.formulaText = exceedText
+        if (this.sum.length > 8) {
+          this.historyText = exceedText
           this.sum = 0
-          return 
         }
         
         if (value.match(/\d/g)){
-          this.sum = this.formulaText.match(/\d*$/)[0]
+          this.sum = this.evalText.match(/\d*$/)[0]
         }
         
-        const formulaLength = this.formulaText.length
+        const formulaLength = this.evalText.length
         if (value === 'ac') {
           this.clear()
         }
         
 
         if (this.isOperator(value)) {
-          const countOperator = this.formulaText.match(/[\*\-\+\/]/g).length
+          const countOperator = this.evalText.match(/[\*\-\+\/]/g).length
           if (this.duplicatedOperator()) {
-            this.formulaText = this.formulaText.substr(0, this.formulaText.length - 2) + value
+            this.evalText = this.evalText.substr(0, this.evalText.length - 2) + value
+            this.historyText = this.historyText.substr(0, this.historyText.length - 2) + value
           }
           if (countOperator > 1 && countOperator % 2 == 0) {
-            const calText = this.formulaText.substr(0, this.formulaText.length - 1)
+            const calText = this.evalText.substr(0, this.evalText.length - 1)
             this.sum = this.eval(calText)
-            this.formulaText = this.sum + value
+            this.evalText = this.sum + value
             this.flash()
           }
         }
         if (value === '=') {
           this.answer()
+        }
+        if (this.sum.length > 8) {
+          this.historyText = exceedText
+          this.evalText = '0'
+          this.sum = 0
         }
       }
     } 
