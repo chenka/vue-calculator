@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Welcome to Vue</title>
+  <script src="asset/vue.min.js"></script>
+  <link rel="stylesheet" href="asset/animate.min.css">
+  <link rel="stylesheet" href="asset/bootstrap.min.css">
+  <link rel="stylesheet" href="asset/app.css">
+  <link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
+</head>
+<body>
+  <div class="container" id="app">
+  <div class="calculator well">
+    <div class="name text-center"> ELECTRONIC CALCULATOR</div>
+    <div class="screen text-right">
+      <p class="sum animated" :class="{fadeIn: fadeIn}">{{sum}}</p>
+      <p class="formula">{{formulaText}}&nbsp;</p>
+    </div>
+    <div class="buttons" @click="calculate($event.target.value)">
+      <button class="red long" value="ac">AC</button>
+      <button value='÷'>÷</button>
+      <button value="x">x</button>
+      <button value="7">7</button>
+      <button value="8">8</button>
+      <button value="9">9</button>
+      <button value="-">-</button>
+      <button value="4">4</button>
+      <button value="5">5</button>
+      <button value="6">6</button>
+      <button value="+">+</button>
+      <button value="1">1</button>
+      <button value="2">2</button>
+      <button value="3">3</button>
+      <button class="equal" value="=">=</button>
+      <button class="long" value="0">0</button>
+      <button value=".">.</button>
+      
+    </div>
+  </div>
+    <footer class="text-center">Created by <a class="hilight" href="https://www.linkedin.com/in/sarunyhot" target="_blank">Kao</a></footer>
+  </div>
+  <script src="asset/app.js"></script>
+</body>
+</html>

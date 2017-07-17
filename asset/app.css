@@ -1,0 +1,89 @@
+body {
+  background: #818181;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.name {
+  margin-bottom: 15px;
+  font-size: 1.1em;
+}
+.calculator {
+  width: 375px;
+  height: 505px;
+  margin: 0 auto;
+  margin-top: 10%;
+  background-color: #dfd8d0;
+  border: 2px solid #908b85;
+  border-radius: 20px;
+  box-shadow: 7px 10px 34px 1px rgba(0, 0, 0, 0.68), inset -1px -6px 12px 0.1px #89847e;
+}
+
+
+.screen {
+  background: #c3c2ab;
+  border-radius: 10px;
+  padding: 10px;
+  border: 2px solid #b4b39d;
+}
+
+.sum {
+  font-weight: bold;
+  font-size: 3em;
+  margin: 0;
+  line-height: 1;
+  animation-duration: 0.1s;
+  animation-delay: 0.1s;
+}
+.formula {
+  margin: 0;
+  color: #656560;
+}
+
+.buttons button {
+  font-size: 22px;
+  margin-top: 15px;
+  width: 65px;
+  height: 50px;
+  border-radius: 10px;
+  outline: none;
+  margin-right: 15px;
+  color: white;
+  background: #2b2929;
+  border: none;
+  box-shadow: 0px 5px 0px 0px #2d2626, inset 0px -3px 10px -2px #5d5656;
+}
+
+.buttons button.red {
+  background: #ab3333;
+  box-shadow: 0px 5px 0px 0px #581c1c, inset 0px -3px 10px -2px #ab3333;
+}
+
+.buttons button.red:active {
+    background: #ab3333;
+}
+
+.buttons button:active {
+  background: #2b2929;
+  box-shadow: none;
+  border:none;
+  transform: translate(0px, 5px);
+}
+
+.buttons button.long {
+  width: 147px;
+}
+
+.buttons button.equal {
+  height: 115px;
+  position: absolute;
+}
+
+footer {
+  margin-top: 30px;
+  font-size: 1.2em;
+}
+
+footer .hilight {
+  color: #b70d0d;
+  text-decoration:none;
+}
